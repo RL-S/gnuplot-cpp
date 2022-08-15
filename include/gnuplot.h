@@ -24,15 +24,18 @@
 #include <iostream>
 #include <fstream>
 
+#include <stdexcept>
+
 class GnuplotPipe {
 public:
     inline GnuplotPipe(bool persist = true) {
-        std::cout << "Opening gnuplot... ";
+        /* L. Steffen:
+         * removed std::cout call on success,
+         * replaced it with throw on failure.
+         * */
         pipe = popen(persist ? "gnuplot -persist" : "gnuplot", "w");
         if (!pipe)
-            std::cout << "failed!" << std::endl;
-        else
-            std::cout << "succeded." << std::endl;
+            throw std::runtime_error("Failed to open gnuplot pipe!");
     }
     inline virtual ~GnuplotPipe(){
         if (pipe) pclose(pipe);
@@ -49,7 +52,7 @@ public:
         if (!pipe) return;
         for (unsigned i = 0; i < repeatBuffer; i++) {
             for (auto& line : buffer) fputs(line.c_str(), pipe);
-            fputs("e\n", pipe);
+            fputs("\n", pipe);
         }
         fflush(pipe);
         buffer.clear();
