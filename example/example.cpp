@@ -5,6 +5,7 @@
 
 int main(){
     GnuplotPipe gp;
+    gp.open();
     gp.sendLine("plot [-pi/2:pi] cos(x),-(sin(x) > sin(x+1) ? sin(x) : sin(x+1))");
     gp.sendEndOfData();
     int duration {2};
