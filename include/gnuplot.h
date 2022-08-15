@@ -14,6 +14,7 @@
  *
  * URL: https://github.com/martinruenz/gnuplot-cpp
  * AUTHOR: Martin Rünz, 2015
+ * Modifications: Lennart Steffen, 2022
  */
 
 #pragma once
@@ -30,11 +31,11 @@ class GnuplotPipe {
 public:
 	GnuplotPipe() = default;
 
+	bool isOpen() const { return pipe != nullptr; }
+
 	void open(bool persist = true) {
-		/* L. Steffen:
-		 * removed std::cout call on success,
-		 * replaced it with throw on failure.
-		 * */
+		if ( isOpen() )
+			return;
 		pipe = popen(persist ? "gnuplot -persist" : "gnuplot", "w");
 		if (!pipe)
 			throw std::runtime_error("Failed to open gnuplot pipe!");
