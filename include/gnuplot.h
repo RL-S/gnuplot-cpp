@@ -57,7 +57,7 @@ public:
 		if (!pipe) return;
 		for (unsigned i = 0; i < repeatBuffer; i++) {
 			for (auto& line : buffer) fputs(line.c_str(), pipe);
-			fputs("\n", pipe);
+			fputs("e\n", pipe);
 		}
 		fflush(pipe);
 		buffer.clear();
