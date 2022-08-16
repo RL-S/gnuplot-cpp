@@ -53,6 +53,11 @@ public:
 			fputs((text + "\n").c_str(), pipe);
 	}
 
+	void flush(){
+		if (!pipe) return;
+		fflush(pipe);
+	}
+
 	void sendEndOfData(unsigned repeatBuffer = 1){
 		if (!pipe) return;
 		for (unsigned i = 0; i < repeatBuffer; i++) {

@@ -3,3 +3,4 @@ Default/
 Release/
 build/
 CMakeLists.txt.user
+*.dat
