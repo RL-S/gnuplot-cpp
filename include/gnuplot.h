@@ -31,6 +31,9 @@ class GnuplotPipe {
 public:
 	GnuplotPipe() = default;
 
+	GnuplotPipe(GnuplotPipe&&) = default;
+	GnuplotPipe& operator=(GnuplotPipe&&) = default;
+
 	bool isOpen() const { return pipe != nullptr; }
 
 	void open(bool persist = true) {
@@ -80,7 +83,7 @@ public:
 
 private:
 	GnuplotPipe(GnuplotPipe const&) = delete;
-	void operator=(GnuplotPipe const&) = delete;
+	GnuplotPipe& operator=(GnuplotPipe const&) = delete;
 
 	FILE* pipe {nullptr};
 	std::vector<std::string> buffer;
