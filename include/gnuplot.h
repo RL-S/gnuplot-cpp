@@ -49,7 +49,7 @@ public:
 	}
 
 	void sendLine(const std::string& text, bool useBuffer = false){
-		if (!pipe) return;
+		throwIfNotOpen();
 		if (useBuffer)
 			buffer.push_back(text + "\n");
 		else
@@ -57,12 +57,12 @@ public:
 	}
 
 	void flush(){
-		if (!pipe) return;
+		throwIfNotOpen();
 		fflush(pipe);
 	}
 
 	void sendEndOfData(unsigned repeatBuffer = 1){
-		if (!pipe) return;
+		throwIfNotOpen();
 		for (unsigned i = 0; i < repeatBuffer; i++) {
 			for (auto& line : buffer) fputs(line.c_str(), pipe);
 			fputs("e\n", pipe);
@@ -84,6 +84,10 @@ public:
 private:
 	GnuplotPipe(GnuplotPipe const&) = delete;
 	GnuplotPipe& operator=(GnuplotPipe const&) = delete;
+	void throwIfNotOpen() const {
+		if (!pipe)
+			throw std::runtime_error("Gnuplot pipe is not open!");
+	}
 
 	FILE* pipe {nullptr};
 	std::vector<std::string> buffer;
